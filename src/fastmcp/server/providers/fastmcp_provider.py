@@ -51,10 +51,11 @@ def _expand_uri_template(template: str, params: dict[str, Any]) -> str:
     # Expand {?param1,param2,...} query parameter blocks
     def _expand_query_block(match: re.Match[str]) -> str:
         names = [n.strip() for n in match.group(1).split(",")]
-        parts = []
-        for name in names:
-            if name in params:
-                parts.append(f"{quote(name)}={quote(str(params[name]))}")
+        parts = [
+            f"{quote(name)}={quote(str(params[name]))}"
+            for name in names
+            if name in params
+        ]
         if parts:
             return "?" + "&".join(parts)
         return ""
